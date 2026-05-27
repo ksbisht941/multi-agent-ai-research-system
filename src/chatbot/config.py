@@ -29,7 +29,7 @@ class Settings(BaseSettings):
     PDF_PATH: str = "data/yolo_melanoma_final.pdf"
     
     # ── LLM Token Configurations ──────────────────────────────────────────────
-    MAX_TOKEN_BUDGET: int = 150
+    MAX_TOKEN_BUDGET: int = 1000
     MISTRAL_MODEL: str = "mistral-large-latest"
 
     model_config = SettingsConfigDict(

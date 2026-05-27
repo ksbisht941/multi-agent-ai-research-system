@@ -418,7 +418,7 @@ export default function App() {
           </div>
           <div style={{ display: 'flex', gap: '8px' }}>
             <span style={{ fontSize: '0.8rem', color: 'hsl(var(--text-secondary))', background: 'rgba(255,255,255,0.03)', padding: '6px 12px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.05)' }}>
-              Memory limit: <b>150 tokens</b>
+              Memory limit: <b>1000 tokens</b>
             </span>
           </div>
         </header>

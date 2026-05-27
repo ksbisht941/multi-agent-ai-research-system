@@ -44,7 +44,7 @@ def chat_node(state: ChatState) -> dict:
     Chat node that evaluates the message history, trims older messages to respect
     the short-term memory budget, and invokes the Mistral LLM with tool capabilities.
     """
-    max_tokens = settings.MAX_TOKEN_BUDGET if settings else 150
+    max_tokens = settings.MAX_TOKEN_BUDGET if settings else 1000
     model_name = settings.MISTRAL_MODEL if settings else "mistral-large-latest"
     
     # Trim the conversation history using approximate tokens counts
