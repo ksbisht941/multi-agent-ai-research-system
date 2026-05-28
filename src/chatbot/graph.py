@@ -12,7 +12,7 @@ from langgraph.checkpoint.sqlite import SqliteSaver
 from langgraph.types import interrupt, Command
 
 from chatbot.config import settings
-from chatbot.state import ChatState
+from chatbot.state import ChatState, delete_old_messages
 from chatbot.tools import tools
 
 logger = logging.getLogger(__name__)
@@ -44,7 +44,7 @@ def chat_node(state: ChatState) -> dict:
     Chat node that evaluates the message history, trims older messages to respect
     the short-term memory budget, and invokes the Mistral LLM with tool capabilities.
     """
-    max_tokens = settings.MAX_TOKEN_BUDGET if settings else 1000
+    max_tokens = settings.MAX_TOKEN_BUDGET if settings else 150
     model_name = settings.MISTRAL_MODEL if settings else "mistral-large-latest"
     
     # Trim the conversation history using approximate tokens counts
@@ -125,6 +125,7 @@ def get_chatbot(force_recompile: bool = False):
         workflow.add_node("chat_node", chat_node)
         workflow.add_node("tools", ToolNode(tools))
         workflow.add_node("human_approval", human_approval_node)
+        workflow.add_node("cleanup", delete_old_messages)
         
         # Define transitions and conditional logic
         workflow.add_edge(START, "chat_node")
@@ -134,6 +135,9 @@ def get_chatbot(force_recompile: bool = False):
             ["human_approval", "tools", END]
         )
         workflow.add_edge("tools", "chat_node")
+        # Cleanup node: optionally delete oldest messages to control checkpoint size
+        workflow.add_edge("chat_node", "cleanup")
+        workflow.add_edge("cleanup", END)
         
         # Setup persistent SQLite Checkpointer
         db_path = settings.abs_database_path if settings else "data/chatbot.db"

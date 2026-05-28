@@ -62,7 +62,7 @@ def index_document() -> dict:
         logger.info(f"Loaded PDF document containing {len(docs)} pages.")
         
         # Split into chunks
-        splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
+        splitter = RecursiveCharacterTextSplitter(chunk_size=150, chunk_overlap=200)
         chunks = splitter.split_documents(docs)
         logger.info(f"Split PDF into {len(chunks)} chunks.")
         

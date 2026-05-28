@@ -12,7 +12,7 @@ This platform showcases advanced AI agent patterns, including **Short-Term Memor
 *   **Human-in-the-Loop (HITL) Gateways**: Dynamically pauses state executions (using LangGraph `interrupt` logic) when the agent requests external actions (e.g., Live Web Search), prompting users for approval or rejection in real-time before resuming.
 *   **Factual Q&A Engine (RAG)**: Integrates a vector database engine utilizing **Chroma** and **Google Gemini Embeddings** (`gemini-embedding-001`) to search, retrieve, and cite relevant source passages and page numbers from a research paper on YOLO melanoma cell classification.
 *   **Centralized State & Multi-threading**: Leverages an SQLite checkpointer (`SqliteSaver`) to save and resume conversations, supporting thread-specific histories, session persistence, and seamless interrupt recovery.
-*   **Short-Term Memory Budgeting**: Enforces strict token-budget limits (`MAX_TOKEN_BUDGET=1000` by default) by trimming older messages from the active LLM context inside the graph nodes, preventing unbounded DB growth and token overflow.
+*   **Short-Term Memory Budgeting**: Enforces strict token-budget limits (`MAX_TOKEN_BUDGET=150` by default) by trimming older messages from the active LLM context inside the graph nodes, preventing unbounded DB growth and token overflow.
 *   **Polished React Web Dashboard**: A futuristic glassmorphic UI built with **React** and **Lucide Icons**, featuring:
     *   **Live Token Streaming**: Word-by-word streaming of agent completions via Server-Sent Events (SSE).
     *   **Tool Execution Cards**: Collapsible visualization panels showing active tool parameters and live return payloads.

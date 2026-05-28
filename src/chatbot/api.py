@@ -250,6 +250,13 @@ async def resolve_approval(req: ApprovalRequest):
 
     return StreamingResponse(resume_generator(), media_type="text/event-stream")
 
+@app.get("/api/token-budget")
+async def get_token_budget():
+    max_tokens = settings.MAX_TOKEN_BUDGET if settings else 150
+    return {
+        "token_budget": max_tokens
+    }
+
 # ── Entrypoint ─────────────────────────────────────────────────────────────
 if __name__ == "__main__":
     import uvicorn
