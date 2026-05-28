@@ -70,6 +70,17 @@ GOOGLE_API_KEY=your_google_api_key
 
 ### 2. Backend Package Installation
 
+This project keeps source PDFs, embeddings, DB checkpoints, and outputs in separate folders under `data/`.
+
+Recommended structure:
+
+* `data/raw/` — source documents and raw training/reference files
+* `data/db/` — SQLite checkpoint databases and state persistence
+* `data/embeddings/` — vector embeddings and Chroma persistence stores
+* `data/output/` — generated PDFs, exports, and temporary artifacts
+
+This separation improves reproducibility, reduces accidental data pollution, and makes backups easier.
+
 This project utilizes `uv` for lightning-fast environment setups. Install the backend package in editable mode:
 
 ```bash

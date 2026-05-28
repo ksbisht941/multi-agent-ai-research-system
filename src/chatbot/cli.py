@@ -2,10 +2,11 @@ import os
 import uuid
 import sqlite3
 import logging
+from pathlib import Path
 from langchain_core.messages import HumanMessage
 from langgraph.types import Command
 
-from chatbot.config import settings
+from chatbot.config import settings, BASE_DIR
 from chatbot.graph import get_chatbot
 
 logging.basicConfig(level=logging.WARNING)
@@ -16,10 +17,10 @@ def list_and_select_thread() -> str:
     Connects to the SQLite checkpoint database, lists any existing conversation
     threads, and prompts the user to select one to resume or start a new session.
     """
-    db_path = settings.abs_database_path if settings else "data/chatbot.db"
+    db_path = settings.abs_database_path if settings else BASE_DIR / Path("data/db/chatbot.db")
     
     # Ensure database file exists
-    os.makedirs(os.path.dirname(db_path), exist_ok=True)
+    os.makedirs(os.path.dirname(str(db_path)), exist_ok=True)
     conn = sqlite3.connect(str(db_path))
     
     try:

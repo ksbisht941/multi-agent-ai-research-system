@@ -13,7 +13,7 @@ from pydantic import BaseModel
 from langchain_core.messages import HumanMessage
 from langgraph.types import Command
 
-from chatbot.config import settings
+from chatbot.config import settings, BASE_DIR
 from chatbot.graph import get_chatbot
 from chatbot.tools.rag import index_document
 
@@ -52,8 +52,9 @@ class GeneralResponse(BaseModel):
 
 # ── Helper Functions ──────────────────────────────────────────────────────
 def get_db_connection():
-    db_path = settings.abs_database_path if settings else Path("data/chatbot.db")
-    return sqlite3.connect(str(db_path))
+    db_path = settings.abs_database_path if settings else BASE_DIR / Path("data/db/chatbot.db")
+    db_path.parent.mkdir(parents=True, exist_ok=True)
+    return sqlite3.connect(str(db_path), timeout=30, check_same_thread=False)
 
 # ── API Endpoints ─────────────────────────────────────────────────────────
 
@@ -72,9 +73,7 @@ def get_status():
 @app.get("/api/threads")
 def list_threads():
     """Retrieves all active conversation thread IDs from SQLite checkpoints."""
-    db_path = settings.abs_database_path if settings else Path("data/chatbot.db")
-    
-    # Ensure database exists
+    db_path = settings.abs_database_path if settings else BASE_DIR / Path("data/db/chatbot.db")
     db_path.parent.mkdir(parents=True, exist_ok=True)
     conn = get_db_connection()
     
@@ -83,7 +82,7 @@ def list_threads():
         threads = [row[0] for row in cursor.fetchall()]
         return {"threads": threads}
     except Exception as e:
-        logger.error(f"Error fetching threads from DB: {e}")
+        logger.error(f"Error fetching threads from DB (%s): %s", db_path, e, exc_info=True)
         return {"threads": []}
     finally:
         conn.close()
@@ -103,11 +102,11 @@ def trigger_rag_indexing(background_tasks: BackgroundTasks):
 @app.get("/api/pdf/{filename}")
 def download_pdf(filename: str):
     """Serves the generated productivity schedule PDF files for download."""
-    data_dir = settings.abs_database_path.parent if settings else Path("data")
+    data_dir = settings.abs_output_path if settings else BASE_DIR / Path("data/output")
     pdf_path = data_dir / filename
     
     # Prevent path traversal
-    if not pdf_path.resolve().is_relative_to(data_dir.resolve().parent):
+    if not pdf_path.resolve().is_relative_to(data_dir.resolve()):
          raise HTTPException(status_code=400, detail="Invalid file path operation.")
          
     if not pdf_path.exists():

@@ -1,6 +1,7 @@
 import os
 import sqlite3
 import logging
+from pathlib import Path
 from typing import Literal
 
 from langchain_core.messages import AIMessage, ToolMessage
@@ -11,7 +12,7 @@ from langgraph.prebuilt import ToolNode
 from langgraph.checkpoint.sqlite import SqliteSaver
 from langgraph.types import interrupt, Command
 
-from chatbot.config import settings
+from chatbot.config import settings, BASE_DIR
 from chatbot.state import ChatState, delete_old_messages
 from chatbot.tools import tools
 
@@ -140,7 +141,7 @@ def get_chatbot(force_recompile: bool = False):
         workflow.add_edge("cleanup", END)
         
         # Setup persistent SQLite Checkpointer
-        db_path = settings.abs_database_path if settings else "data/chatbot.db"
+        db_path = settings.abs_database_path if settings else BASE_DIR / Path("data/db/chatbot.db")
         
         # Ensure parent directory exists
         os.makedirs(os.path.dirname(db_path), exist_ok=True)

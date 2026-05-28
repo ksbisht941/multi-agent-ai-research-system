@@ -23,10 +23,11 @@ class Settings(BaseSettings):
     PORT: int = 8000
 
     # ── Database & Storage Paths ─────────────────────────────────────────────
-    # Paths are relative to the project root directory
-    DATABASE_PATH: str = "data/chatbot.db"
-    CHROMA_DB_PATH: str = "data/chroma_database"
-    PDF_PATH: str = "data/yolo_melanoma_final.pdf"
+    # Paths are relative to the project root directory.
+    DATABASE_PATH: str = "data/db/chatbot.db"
+    CHROMA_DB_PATH: str = "data/embeddings/chroma_database"
+    PDF_PATH: str = "data/raw/yolo_melanoma_final.pdf"
+    OUTPUT_PATH: str = "data/output"
     
     # ── LLM Token Configurations ──────────────────────────────────────────────
     MAX_TOKEN_BUDGET: int = 150
@@ -54,6 +55,12 @@ class Settings(BaseSettings):
     def abs_pdf_path(self) -> Path:
         """Returns the absolute path to the RAG PDF document."""
         path = Path(self.PDF_PATH)
+        return path if path.is_absolute() else BASE_DIR / path
+
+    @property
+    def abs_output_path(self) -> Path:
+        """Returns the absolute path to the generated output directory."""
+        path = Path(self.OUTPUT_PATH)
         return path if path.is_absolute() else BASE_DIR / path
 
 # Instantiate the settings manager

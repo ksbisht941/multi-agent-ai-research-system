@@ -32,7 +32,7 @@ def get_vector_store(force_reload: bool = False) -> Chroma:
     """
     global _vector_store
     if _vector_store is None or force_reload:
-        db_path = settings.abs_chroma_db_path if settings else Path("data/chroma_database")
+        db_path = settings.abs_chroma_db_path if settings else Path("data/embeddings/chroma_database")
         logger.info(f"Connecting to persistent Chroma vector database at: {db_path}")
         
         # Instantiate Chroma
@@ -47,7 +47,7 @@ def index_document() -> dict:
     Loads the PDF research paper, splits it into chunks, and indexes it into the vector store.
     This should be run once during setup or triggered via CLI/API.
     """
-    pdf_path = settings.abs_pdf_path if settings else Path("data/yolo_melanoma_final.pdf")
+    pdf_path = settings.abs_pdf_path if settings else Path("data/raw/yolo_melanoma_final.pdf")
     logger.info(f"Starting document indexing. Loading PDF: {pdf_path}")
     
     if not pdf_path.exists():
@@ -67,7 +67,7 @@ def index_document() -> dict:
         logger.info(f"Split PDF into {len(chunks)} chunks.")
         
         # Overwrite/Create database and persist
-        db_path = settings.abs_chroma_db_path if settings else Path("data/chroma_database")
+        db_path = settings.abs_chroma_db_path if settings else Path("data/embeddings/chroma_database")
         logger.info(f"Persisting {len(chunks)} text chunks to Chroma at {db_path}...")
         
         vector_db = Chroma.from_documents(
@@ -108,7 +108,7 @@ def rag_tool(query: str) -> dict:
         vector_db = get_vector_store()
         
         # Verify if database actually has documents (checking if files exist in directory)
-        db_path = settings.abs_chroma_db_path if settings else Path("data/chroma_database")
+        db_path = settings.abs_chroma_db_path if settings else Path("data/embeddings/chroma_database")
         # Chroma writes sqlite/parquet/etc files in its folder
         db_files = list(db_path.glob("**/*")) if db_path.exists() else []
         
