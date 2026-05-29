@@ -396,7 +396,7 @@ export default function App() {
           ))}
         </div>
 
-        <div className="indexing-panel">
+        {/* <div className="indexing-panel">
           <span className="indexing-title">RAG Data Engine</span>
           <button 
             className="indexing-btn" 
@@ -406,7 +406,7 @@ export default function App() {
             <RefreshCw size={16} className={indexing ? 'animate-spin' : ''} />
             {indexing ? 'Indexing document...' : 'Index Melanoma PDF'}
           </button>
-        </div>
+        </div> */}
       </aside>
 
       {/* ── MAIN CHAT AREA ── */}

@@ -8,11 +8,13 @@ from reportlab.lib.pagesizes import A4
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib import colors
 
+from chatbot.config import settings
+
 logger = logging.getLogger(__name__)
 
-# Base folder for PDF outputs
-BASE_DIR = Path(__file__).resolve().parent.parent.parent.parent
-OUTPUT_DIR = BASE_DIR / "multi-agent-ai-research-system" / "data"
+# Use the configured output folder when available.
+ROOT_DIR = Path(__file__).resolve().parents[3]
+OUTPUT_DIR = settings.abs_output_path if settings else ROOT_DIR / "data" / "output"
 
 @tool
 def generate_day_plan(tasks: list[str], start_hour: int = 7) -> dict:
