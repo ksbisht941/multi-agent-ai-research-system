@@ -45,6 +45,7 @@ def index_document() -> dict:
 
 @tool
 def rag_tool(query: str) -> dict:
+    """Retrieve relevant passages from the indexed PDF using semantic similarity."""
     logger.info(f"RAG tool invoked with query: '{query}'")
     try:
         vector_db = get_vector_store()

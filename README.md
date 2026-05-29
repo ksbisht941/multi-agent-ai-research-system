@@ -81,6 +81,23 @@ Recommended structure:
 
 This separation improves reproducibility, reduces accidental data pollution, and makes backups easier.
 
+### Source Architecture
+
+The Python backend is organized into clear domain packages under `src/`:
+
+* `core/` — configuration, settings, and shared runtime utilities
+* `chatbot/` — LangGraph workflow, state, CLI, and tools glue code
+* `services/` — high-level orchestration like RAG indexing and retrieval
+* `vectorstore/` — vector database adapters and persistence helpers
+* `database/` — centralized SQLite session management and migrations
+* `ingestion/` — document loaders, chunkers, cleaners, and ingestion pipelines
+* `embeddings/` — embedding provider integrations and registry support
+* `retrieval/` — hybrid search, reranking, and query routing logic
+* `api/` — FastAPI routes, controllers, and schemas
+* `workers/` — background tasks and scheduling helpers
+
+This layout keeps ingestion, embedding, retrieval, persistence, and API concerns separated for cleaner LLMOps development.
+
 This project utilizes `uv` for lightning-fast environment setups. Install the backend package in editable mode:
 
 ```bash
