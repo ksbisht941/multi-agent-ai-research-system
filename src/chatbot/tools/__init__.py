@@ -1,3 +1,8 @@
+"""Tools used by the chatbot (scheduler, rag, math, etc.)."""
+
+from .scheduler import generate_day_plan, generate_schedule_pdf
+
+__all__ = ["generate_day_plan", "generate_schedule_pdf"]
 from chatbot.tools.math import calculator
 from chatbot.tools.search import duckduckgo_search
 from chatbot.tools.scheduler import generate_day_plan, generate_schedule_pdf
