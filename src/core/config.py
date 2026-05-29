@@ -1,16 +1,16 @@
-import os
 from pathlib import Path
-from typing import Optional
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 # Base workspace directory path
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
+
 
 class Settings(BaseSettings):
     """
     Centralized configuration settings for the AI Assistant.
     Loads configurations from environment variables or a .env file.
     """
+
     # ── API Keys ─────────────────────────────────────────────────────────────
     MISTRAL_API_KEY: str
     GOOGLE_API_KEY: str
@@ -61,6 +61,7 @@ try:
 except Exception as e:
     settings = None
     import sys
+
     print(
         f"\n[WARNING] Configuration Error: {e}\n"
         "Please ensure a '.env' file exists in your project root with MISTRAL_API_KEY and GOOGLE_API_KEY defined.\n"
