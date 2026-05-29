@@ -1,5 +1,4 @@
 import json
-import sqlite3
 import logging
 import asyncio
 from pathlib import Path
@@ -15,6 +14,7 @@ from langgraph.types import Command
 
 from chatbot.config import settings, BASE_DIR
 from chatbot.graph import get_chatbot
+from database.session import get_sqlite_connection
 from services.rag_service import index_document
 
 # Configure logging
@@ -52,9 +52,7 @@ class GeneralResponse(BaseModel):
 
 # ── Helper Functions ──────────────────────────────────────────────────────
 def get_db_connection():
-    db_path = settings.abs_database_path if settings else BASE_DIR / Path("data/db/chatbot.db")
-    db_path.parent.mkdir(parents=True, exist_ok=True)
-    return sqlite3.connect(str(db_path), timeout=30, check_same_thread=False)
+    return get_sqlite_connection()
 
 # ── API Endpoints ─────────────────────────────────────────────────────────
 
@@ -73,8 +71,6 @@ def get_status():
 @app.get("/api/threads")
 def list_threads():
     """Retrieves all active conversation thread IDs from SQLite checkpoints."""
-    db_path = settings.abs_database_path if settings else BASE_DIR / Path("data/db/chatbot.db")
-    db_path.parent.mkdir(parents=True, exist_ok=True)
     conn = get_db_connection()
     
     try:
