@@ -15,7 +15,7 @@ from langgraph.types import Command
 
 from chatbot.config import settings, BASE_DIR
 from chatbot.graph import get_chatbot
-from chatbot.tools.rag import index_document
+from services.rag_service import index_document
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)

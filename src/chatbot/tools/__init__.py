@@ -6,7 +6,7 @@ __all__ = ["generate_day_plan", "generate_schedule_pdf"]
 from chatbot.tools.math import calculator
 from chatbot.tools.search import duckduckgo_search
 from chatbot.tools.scheduler import generate_day_plan, generate_schedule_pdf
-from chatbot.tools.rag import rag_tool
+from services.rag_service import rag_tool
 
 # Aggregated list of all tools exposed to the LangGraph AI agent
 tools = [
@@ -14,7 +14,7 @@ tools = [
     calculator,
     rag_tool,
     generate_day_plan,
-    generate_schedule_pdf
+    generate_schedule_pdf,
 ]
 
 __all__ = [

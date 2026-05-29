@@ -42,7 +42,7 @@ def main():
         run_cli()
         
     elif args.mode == "index":
-        from chatbot.tools.rag import index_document
+        from services.rag_service import index_document
         print("[*] Launching RAG Indexer...")
         res = index_document()
         if res["status"] == "success":
