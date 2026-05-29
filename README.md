@@ -1,4 +1,4 @@
-# Production-Grade LangGraph AI Assistant Platform
+# Production-Grade LangGraph AI Assistant Platform v1
 
 An enterprise-ready, multi-tool AI Assistant Platform engineered using **LangGraph**, **LangChain**, and **FastAPI**, accompanied by a state-of-the-art **React + Vite** web dashboard. 
 
